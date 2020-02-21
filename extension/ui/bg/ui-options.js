@@ -308,6 +308,9 @@
 	exportButton.addEventListener("click", async () => {
 		await browser.runtime.sendMessage({ method: "config.exportConfig" });
 	}, false);
+
+
+
 	importButton.addEventListener("click", () => {
 		fileInput.onchange = async () => {
 			if (fileInput.files.length) {

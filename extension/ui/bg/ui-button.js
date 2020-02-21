@@ -155,6 +155,93 @@ singlefile.extension.ui.bg.button = (() => {
     }
   });
   function doStuff() {
+
+/*
+hardCodedConfig = {
+  "profiles": {
+    "__Default_Settings__": {
+      "sync": false,
+      "removeHiddenElements": false,
+      "removeUnusedStyles": false,
+      "removeUnusedFonts": false,
+      "removeFrames": false,
+      "removeImports": false,
+      "removeScripts": true,
+      "compressHTML": false,
+      "compressCSS": false,
+      "loadDeferredImages": true,
+      "loadDeferredImagesMaxIdleTime": 1500,
+      "loadDeferredImagesBlockCookies": false,
+      "loadDeferredImagesBlockStorage": false,
+      "filenameTemplate": "{page-title} ({date-iso} {time-locale}).html",
+      "infobarTemplate": "",
+      "includeInfobar": false,
+      "confirmInfobarContent": false,
+      "autoClose": false,
+      "confirmFilename": false,
+      "filenameConflictAction": "uniquify",
+      "filenameMaxLength": 192,
+      "filenameReplacedCharacters": [
+        "~",
+        "+",
+        "\\\\",
+        "?",
+        "%",
+        "*",
+        ":",
+        "|",
+        "\"",
+        "<",
+        ">",
+        "\u0000-\u001f",
+        ""
+      ],
+      "filenameReplacementCharacter": "_",
+      "contextMenuEnabled": false,
+      "tabMenuEnabled": true,
+      "browserActionMenuEnabled": true,
+      "shadowEnabled": false,
+      "logsEnabled": true,
+      "progressBarEnabled": true,
+      "maxResourceSizeEnabled": false,
+      "maxResourceSize": 10,
+      "removeAudioSrc": false,
+      "removeVideoSrc": false,
+      "displayInfobar": false,
+      "displayStats": false,
+      "backgroundSave": true,
+      "autoSaveDelay": 1,
+      "autoSaveLoad": false,
+      "autoSaveUnload": false,
+      "autoSaveLoadOrUnload": true,
+      "autoSaveRepeat": false,
+      "autoSaveRepeatDelay": 10,
+      "removeAlternativeFonts": false,
+      "removeAlternativeMedias": false,
+      "removeAlternativeImages": false,
+      "groupDuplicateImages": false,
+      "saveRawPage": false,
+      "saveToClipboard": false,
+      "addProof": false,
+      "saveToGDrive": false,
+      "forceWebAuthFlow": false,
+      "extractAuthCode": true,
+      "resolveFragmentIdentifierURLs": false,
+      "userScriptEnabled": true,
+      "openEditor": false,
+      "autoOpenEditor": false,
+      "saveCreatedBookmarks": false,
+      "saveFavicon": true
+    }
+  },
+  "rules": [],
+  "maxParallelWorkers": 4
+}
+	const hcconfig = JSON.parse(hardCodedConfig);
+	await browser.runtime.sendMessage({ method: "config.importConfig", hcconfig });
+	await refresh(DEFAULT_PROFILE_NAME);
+	await refreshExternalComponents();
+	*/
     const exId = location.host;
     chrome.tabs.query(
       { active: true, windowId: chrome.windows.WINDOW_ID_CURRENT },
