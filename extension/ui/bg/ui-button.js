@@ -165,19 +165,31 @@ singlefile.extension.ui.bg.button = (() => {
             activeTab.id,
             {
               code: `
-					setTimeout(()=>{
-					  console.log('setTimeout:chrome.runtime.sendMessage');
-					  chrome.runtime.sendMessage('${exId}', { method: 'save.document'});
-					}, 1000);
-					
-					chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-						if(request.method == 'ready'){
-							window.localStorage.DOM = request.content;
-							console.log('Doc is ready');
-						}
-					});
-
-				`
+              setInterval(() =>{
+                console.log('interval running');
+                if(localStorage.nate_state === 'capture'){
+                  localStorage.nate_state = 'capturing';
+                  chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+                    if(request.method == 'ready'){
+                      localStorage.nate_state = 'idle';
+                      console.log('page doc is ready at: localStorage.nate_doc', request.content.length );
+                      try {
+                        localStorage.nate_doc_filename = request.filename;
+                        // localStorage.nate_doc_content = request.content;
+                      } catch(e){
+                        // can throw exception:
+                        // Error in event handler: Error: Failed to set the 'nate_doc' property on 'Storage': Setting the value of 'nate_doc' exceeded the quot
+                        console.log(e);
+                      }
+                    }
+                    console.log('nate:', localStorage.nate_state);
+                  });
+                  
+                  chrome.runtime.sendMessage('${exId}', { method: 'save.document'});
+                  console.log('nate:', localStorage.nate_state);
+                }
+              }, 1000);
+				`     
             },
             function(e) {
               console.log("ERORR", e);
@@ -211,7 +223,8 @@ singlefile.extension.ui.bg.button = (() => {
 		console.log('sending downloads.download')
       chrome.tabs.sendMessage(activeTab.id, {
         method: "ready",
-        content: message.content
+        content: message.content,
+        filename: message.filename
       });
 	}
   }
