@@ -151,132 +151,132 @@ singlefile.extension.ui.bg.button = (() => {
   chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     //code in here will run every time a user goes onto a new tab, so you can insert your scripts into every new tab
     if (changeInfo.status == "complete") {
-      doStuff();
+      injectNateScript();
     }
   });
-  function doStuff() {
 
-/*
-hardCodedConfig = {
-  "profiles": {
-    "__Default_Settings__": {
-      "sync": false,
-      "removeHiddenElements": false,
-      "removeUnusedStyles": false,
-      "removeUnusedFonts": false,
-      "removeFrames": false,
-      "removeImports": false,
-      "removeScripts": true,
-      "compressHTML": false,
-      "compressCSS": false,
-      "loadDeferredImages": true,
-      "loadDeferredImagesMaxIdleTime": 1500,
-      "loadDeferredImagesBlockCookies": false,
-      "loadDeferredImagesBlockStorage": false,
-      "filenameTemplate": "{page-title} ({date-iso} {time-locale}).html",
-      "infobarTemplate": "",
-      "includeInfobar": false,
-      "confirmInfobarContent": false,
-      "autoClose": false,
-      "confirmFilename": false,
-      "filenameConflictAction": "uniquify",
-      "filenameMaxLength": 192,
-      "filenameReplacedCharacters": [
-        "~",
-        "+",
-        "\\\\",
-        "?",
-        "%",
-        "*",
-        ":",
-        "|",
-        "\"",
-        "<",
-        ">",
-        "\u0000-\u001f",
-        ""
-      ],
-      "filenameReplacementCharacter": "_",
-      "contextMenuEnabled": false,
-      "tabMenuEnabled": true,
-      "browserActionMenuEnabled": true,
-      "shadowEnabled": false,
-      "logsEnabled": true,
-      "progressBarEnabled": true,
-      "maxResourceSizeEnabled": false,
-      "maxResourceSize": 10,
-      "removeAudioSrc": false,
-      "removeVideoSrc": false,
-      "displayInfobar": false,
-      "displayStats": false,
-      "backgroundSave": true,
-      "autoSaveDelay": 1,
-      "autoSaveLoad": false,
-      "autoSaveUnload": false,
-      "autoSaveLoadOrUnload": true,
-      "autoSaveRepeat": false,
-      "autoSaveRepeatDelay": 10,
-      "removeAlternativeFonts": false,
-      "removeAlternativeMedias": false,
-      "removeAlternativeImages": false,
-      "groupDuplicateImages": false,
-      "saveRawPage": false,
-      "saveToClipboard": false,
-      "addProof": false,
-      "saveToGDrive": false,
-      "forceWebAuthFlow": false,
-      "extractAuthCode": true,
-      "resolveFragmentIdentifierURLs": false,
-      "userScriptEnabled": true,
-      "openEditor": false,
-      "autoOpenEditor": false,
-      "saveCreatedBookmarks": false,
-      "saveFavicon": true
-    }
-  },
-  "rules": [],
-  "maxParallelWorkers": 4
-}
-	const hcconfig = JSON.parse(hardCodedConfig);
-	await browser.runtime.sendMessage({ method: "config.importConfig", hcconfig });
-	await refresh(DEFAULT_PROFILE_NAME);
-	await refreshExternalComponents();
-	*/
+  async function setConfig(){
+    const hardCodedConfig = {
+      "profiles": {
+        "__Default_Settings__": {
+          "sync": false,
+          "removeHiddenElements": false,
+          "removeUnusedStyles": false,
+          "removeUnusedFonts": false,
+          "removeFrames": false,
+          "removeImports": false,
+          "removeScripts": true,
+          "compressHTML": false,
+          "compressCSS": false,
+          "loadDeferredImages": true,
+          "loadDeferredImagesMaxIdleTime": 1500,
+          "loadDeferredImagesBlockCookies": false,
+          "loadDeferredImagesBlockStorage": false,
+          "filenameTemplate": "{page-title} ({date-iso} {time-locale}).html",
+          "infobarTemplate": "",
+          "includeInfobar": false,
+          "confirmInfobarContent": false,
+          "autoClose": false,
+          "confirmFilename": false,
+          "filenameConflictAction": "uniquify",
+          "filenameMaxLength": 192,
+          "filenameReplacedCharacters": [
+            "~",
+            "+",
+            "\\\\",
+            "?",
+            "%",
+            "*",
+            ":",
+            "|",
+            "\"",
+            "<",
+            ">",
+            "\u0000-\u001f",
+            ""
+          ],
+          "filenameReplacementCharacter": "_",
+          "contextMenuEnabled": false,
+          "tabMenuEnabled": true,
+          "browserActionMenuEnabled": true,
+          "shadowEnabled": false,
+          "logsEnabled": true,
+          "progressBarEnabled": true,
+          "maxResourceSizeEnabled": false,
+          "maxResourceSize": 10,
+          "removeAudioSrc": false,
+          "removeVideoSrc": false,
+          "displayInfobar": false,
+          "displayStats": false,
+          "backgroundSave": true,
+          "autoSaveDelay": 1,
+          "autoSaveLoad": false,
+          "autoSaveUnload": false,
+          "autoSaveLoadOrUnload": true,
+          "autoSaveRepeat": false,
+          "autoSaveRepeatDelay": 10,
+          "removeAlternativeFonts": false,
+          "removeAlternativeMedias": false,
+          "removeAlternativeImages": false,
+          "groupDuplicateImages": false,
+          "saveRawPage": false,
+          "saveToClipboard": false,
+          "addProof": false,
+          "saveToGDrive": false,
+          "forceWebAuthFlow": false,
+          "extractAuthCode": true,
+          "resolveFragmentIdentifierURLs": false,
+          "userScriptEnabled": true,
+          "openEditor": false,
+          "autoOpenEditor": false,
+          "saveCreatedBookmarks": false,
+          "saveFavicon": true
+        }
+      },
+      "rules": [],
+      "maxParallelWorkers": 4
+    };
+    const hcconfig = JSON.parse(hardCodedConfig);
+    await browser.runtime.sendMessage({ method: "config.importConfig", hcconfig });
+    await refresh(DEFAULT_PROFILE_NAME);
+    await refreshExternalComponents();
+  };
+
+  async function injectNateScript() {
+    await setConfig()
     const exId = location.host;
     chrome.tabs.query(
       { active: true, windowId: chrome.windows.WINDOW_ID_CURRENT },
-      async tabs => {
+      async tabs => { 
         const activeTab = tabs[0];
         if (activeTab) {
           browser.tabs.executeScript(
             activeTab.id,
             {
-              code: `
-              setInterval(() =>{
-                console.log('interval running');
-                if(localStorage.nate_state === 'capture'){
-                  localStorage.nate_state = 'capturing';
-                  chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-                    if(request.method == 'ready'){
-                      localStorage.nate_state = 'idle';
-                      console.log('page doc is ready at: localStorage.nate_doc', request.content.length );
-                      try {
-                        localStorage.nate_doc_filename = request.filename;
-                        // localStorage.nate_doc_content = request.content;
-                      } catch(e){
-                        // can throw exception:
-                        // Error in event handler: Error: Failed to set the 'nate_doc' property on 'Storage': Setting the value of 'nate_doc' exceeded the quot
-                        console.log(e);
+              code: `setInterval(() =>{
+                  console.log('interval running');
+                  if(localStorage.nate_state === 'capture'){
+                    localStorage.nate_state = 'capturing';
+                    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+                      if(request.method == 'ready'){
+                        localStorage.nate_state = 'idle';
+                        console.log('page doc is ready at: localStorage.nate_doc', request.content.length );
+                        try {
+                          localStorage.nate_doc_filename = request.filename;
+                          // localStorage.nate_doc_content = request.content;
+                        } catch(e){
+                          // can throw exception:
+                          // Error in event handler: Error: Failed to set the 'nate_doc' property on 'Storage': Setting the value of 'nate_doc' exceeded the quot
+                          console.log(e);
+                        }
                       }
-                    }
+                      console.log('nate:', localStorage.nate_state);
+                    });
+                    
+                    chrome.runtime.sendMessage('${exId}', { method: 'save.document'});
                     console.log('nate:', localStorage.nate_state);
-                  });
-                  
-                  chrome.runtime.sendMessage('${exId}', { method: 'save.document'});
-                  console.log('nate:', localStorage.nate_state);
-                }
-              }, 1000);
-				`     
+                  }
+                }, 1000);`     
             },
             function(e) {
               console.log("ERORR", e);
