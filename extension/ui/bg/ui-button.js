@@ -156,7 +156,7 @@ singlefile.extension.ui.bg.button = (() => {
   });
 
   async function setConfig(){
-    const hardCodedConfig = {
+    const config = {
       "profiles": {
         "__Default_Settings__": {
           "sync": false,
@@ -236,14 +236,13 @@ singlefile.extension.ui.bg.button = (() => {
       "rules": [],
       "maxParallelWorkers": 4
     };
-    const hcconfig = JSON.parse(hardCodedConfig);
-    await browser.runtime.sendMessage({ method: "config.importConfig", hcconfig });
+    await browser.runtime.sendMessage({ method: "config.importConfig", config });
     await refresh(DEFAULT_PROFILE_NAME);
     await refreshExternalComponents();
-  };
+  }
 
-  async function injectNateScript() {
-    await setConfig()
+  function injectNateScript() {
+    setConfig();
     const exId = location.host;
     chrome.tabs.query(
       { active: true, windowId: chrome.windows.WINDOW_ID_CURRENT },
